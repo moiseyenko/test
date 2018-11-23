@@ -1,5 +1,5 @@
 insert into contact (first_name, last_name, birth_date, version) values 
-('Chris', 'Schaefer', '1981-05-03', 1),
+('Chris', 'Schaefer', '1981-03-05', 1),
 ('Scott', 'Tiger', '1990-11-02', 2),
 ('John',  'Smith', '1964-02-28', 2);
 insert into contact_tel_detail (contact_id, tel_type, tel_number) values 

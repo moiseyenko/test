@@ -1,90 +1,111 @@
 package com.epam.springcore.hibernate;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Contact {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name="contact")
+public class Contact implements Serializable{
 	private int id;
 	private String firstName;
 	private String lastName;
-	private LocalDate birthDate;
+	private Date birthDate;
 	private int version;
+	private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
+	private Set<Hobby> hobbies = new HashSet<>();
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ID")
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	@Column(name="FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
+	@Column(name="last_NAME")
 	public String getLastName() {
 		return lastName;
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public LocalDate getBirthDate() {
+	
+	@Column(name="BIRTH_DATE")
+	public Date getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
+	
+	@Version
+	@Column(name="VERSION")
 	public int getVersion() {
 		return version;
 	}
+	
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + version;
-		return result;
+	
+	@OneToMany(mappedBy="contact", cascade=CascadeType.ALL, orphanRemoval=true)
+	public Set<ContactTelDetail> getContactTelDetails() {
+		return contactTelDetails;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Contact other = (Contact) obj;
-		if (birthDate == null) {
-			if (other.birthDate != null)
-				return false;
-		} else if (!birthDate.equals(other.birthDate))
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (id != other.id)
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (version != other.version)
-			return false;
-		return true;
+	public void setContactTelDetails(Set<ContactTelDetail> contactTelDetails) {
+		this.contactTelDetails = contactTelDetails;
+	}
+	
+	public void addContactTelDetail(ContactTelDetail contactTelDetail) {
+		contactTelDetail.setContact(this);
+		getContactTelDetails().add(contactTelDetail);
+	}
+	
+	public void removeContactTelDetail(ContactTelDetail contactTelDetail) {
+		getContactTelDetails().remove(contactTelDetail);
+	}
+	
+	@ManyToMany
+	@JoinTable(name="contact_hobby_detail",
+				joinColumns=@JoinColumn(name="CONTACT_ID"),
+				inverseJoinColumns=@JoinColumn(name="HOBBY_ID"))
+	public Set<Hobby> getHobbies() {
+		return hobbies;
+	}
+	public void setHobbies(Set<Hobby> hobbies) {
+		this.hobbies = hobbies;
 	}
 	@Override
 	public String toString() {
 		return "Contact [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate
-				+ ", version=" + version + "]";
+				+ ", version=" + version + ", contactTelDetails=" + contactTelDetails + "]";
 	}
-	
-	
-	
+
 }

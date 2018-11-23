@@ -4,9 +4,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Runner {
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-		ContactDao contactDao = ctx.getBean(ContactDao.class);
-		System.out.println(contactDao.findAllContacts());
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+		ContactDao contactDao = (ContactDao) ctx.getBean("contactDaoImpl");
+		System.out.println(contactDao.findAll());
 		ctx.close();
 	}
 	
