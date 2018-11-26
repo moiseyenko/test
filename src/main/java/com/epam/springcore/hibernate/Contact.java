@@ -14,8 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +39,11 @@ import lombok.ToString;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="contact")
+@NamedQueries(value = { @NamedQuery(name = "Contact.findAllWithDetail", 
+									query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h"),
+						@NamedQuery(name = "Contact.findById", 
+									query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h "
+											+ "where c.id = :id")})
 public class Contact implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +53,7 @@ public class Contact implements Serializable{
 	private String firstName;
 	@Column(name="last_NAME")
 	private String lastName;
+	@Temporal(TemporalType.DATE)
 	@Column(name="BIRTH_DATE")
 	private Date birthDate;
 	@Version
@@ -56,6 +66,15 @@ public class Contact implements Serializable{
 				joinColumns=@JoinColumn(name="CONTACT_ID"),
 				inverseJoinColumns=@JoinColumn(name="HOBBY_ID"))
 	private Set<Hobby> hobbies = new HashSet<>();
+	
+	public void addContactTelDetail(ContactTelDetail contactTelDetail) {
+		contactTelDetail.setContact(this);
+		getContactTelDetails().add(contactTelDetail);
+	}
+	
+	public void removeContactTelDetail(ContactTelDetail contactTelDetail) {
+		getContactTelDetails().remove(contactTelDetail);
+	}
 	
 
 }

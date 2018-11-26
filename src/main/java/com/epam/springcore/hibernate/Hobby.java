@@ -43,7 +43,7 @@ public class Hobby implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Hobby [hobbyId=" + hobbyId + ", contacts=" + contacts + "]";
+		return "Hobby [hobbyId=" + hobbyId + "]";
 	}
 
 		
