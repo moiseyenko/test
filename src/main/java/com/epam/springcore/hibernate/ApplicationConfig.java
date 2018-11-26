@@ -32,7 +32,7 @@ public class ApplicationConfig {
 				.generateUniqueName(false)
 				.setName("testbd")
 				.setType(EmbeddedDatabaseType.H2)
-				.addScripts("sql/schema.sql", "sql/test-data.sql")
+				.addScripts("sql/V1.1__schema.sql", "sql/V1.2__test-data.sql")
 				.setScriptEncoding("UTF-8")
 				.build();
 	}

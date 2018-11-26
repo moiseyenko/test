@@ -83,7 +83,7 @@ public class ContactTelDetail implements Serializable{
 	@Override
 	public String toString() {
 		return "ContactTelDetail [id=" + id + ", version=" + version + ", telType=" + telType + ", telNumber="
-				+ telNumber + ", contact=" + contact + "]";
+				+ telNumber + "]";
 	}
 
 	

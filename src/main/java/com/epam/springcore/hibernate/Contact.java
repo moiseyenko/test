@@ -1,7 +1,6 @@
 package com.epam.springcore.hibernate;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,93 +18,44 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@ToString(exclude= {"contactTelDetails","hobbies" })
+@EqualsAndHashCode
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @SuppressWarnings("serial")
 @Entity
 @Table(name="contact")
 public class Contact implements Serializable{
-	private int id;
-	private String firstName;
-	private String lastName;
-	private Date birthDate;
-	private int version;
-	private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
-	private Set<Hobby> hobbies = new HashSet<>();
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+	private int id;
 	@Column(name="FIRST_NAME")
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
+	private String firstName;
 	@Column(name="last_NAME")
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
+	private String lastName;
 	@Column(name="BIRTH_DATE")
-	public Date getBirthDate() {
-		return birthDate;
-	}
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-	
+	private Date birthDate;
 	@Version
 	@Column(name="VERSION")
-	public int getVersion() {
-		return version;
-	}
-	
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	
+	private int version;
 	@OneToMany(mappedBy="contact", cascade=CascadeType.ALL, orphanRemoval=true)
-	public Set<ContactTelDetail> getContactTelDetails() {
-		return contactTelDetails;
-	}
-	public void setContactTelDetails(Set<ContactTelDetail> contactTelDetails) {
-		this.contactTelDetails = contactTelDetails;
-	}
-	
-	public void addContactTelDetail(ContactTelDetail contactTelDetail) {
-		contactTelDetail.setContact(this);
-		getContactTelDetails().add(contactTelDetail);
-	}
-	
-	public void removeContactTelDetail(ContactTelDetail contactTelDetail) {
-		getContactTelDetails().remove(contactTelDetail);
-	}
-	
+	private Set<ContactTelDetail> contactTelDetails = new HashSet<>();
 	@ManyToMany
 	@JoinTable(name="contact_hobby_detail",
 				joinColumns=@JoinColumn(name="CONTACT_ID"),
 				inverseJoinColumns=@JoinColumn(name="HOBBY_ID"))
-	public Set<Hobby> getHobbies() {
-		return hobbies;
-	}
-	public void setHobbies(Set<Hobby> hobbies) {
-		this.hobbies = hobbies;
-	}
-	@Override
-	public String toString() {
-		return "Contact [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate
-				+ ", version=" + version + ", contactTelDetails=" + contactTelDetails + "]";
-	}
+	private Set<Hobby> hobbies = new HashSet<>();
+	
 
 }
