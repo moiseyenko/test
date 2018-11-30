@@ -8,4 +8,6 @@ public interface ContactService {
 	Contact findById(int id);
 	Contact save(Contact contact);
 	void delete(Contact contact);
+	List<Contact> findAllByNativeQuery();
+	List<Contact> fingByCriteriaQuery(String firstName, String lastName);
 }

@@ -33,7 +33,7 @@ public class ApplicationConfig {
 				.generateUniqueName(false)
 				.setName("testbd")
 				.setType(EmbeddedDatabaseType.H2)
-				.addScripts("sql/V1.1__schema.sql", "sql/V1.2__test-data.sql")
+				.addScripts("sql/schema.sql", "sql/test-data.sql")
 				.setScriptEncoding("UTF-8")
 				.build();
 	}
@@ -52,7 +52,7 @@ public class ApplicationConfig {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactory.setDataSource(dataSource());
 		entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		entityManagerFactory.setPackagesToScan(new String[] {"com.epam.springcore.jpa"});
+		entityManagerFactory.setPackagesToScan("com.epam.springcore.jpa");
 		entityManagerFactory.setJpaProperties(jpaProperties());
 		return entityManagerFactory;
 	}

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,11 +48,12 @@ import lombok.ToString;
 						@NamedQuery(name = "Contact.findById", 
 									query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h "
 											+ "where c.id = :id")})
+@SqlResultSetMapping(name = "contactResult", entities = @EntityResult(entityClass = Contact.class))
 public class Contact implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
-	private int id;
+	private Integer id;
 	@Column(name="FIRST_NAME")
 	private String firstName;
 	@Column(name="last_NAME")
